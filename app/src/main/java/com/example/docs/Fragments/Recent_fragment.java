@@ -49,6 +49,7 @@ public class Recent_fragment extends Fragment {
     public void onStart() {
         super.onStart();
         getData();
+
     }
 
     @Nullable
