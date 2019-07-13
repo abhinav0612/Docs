@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -25,6 +26,8 @@ import java.util.Map;
 public class Editor extends AppCompatActivity {
     EditText content,filename;
     Button save;
+    String id;
+    Boolean forEdit = false;
     final private String FILE_NAME = "file_name";
     final private String CONTENT = "content";
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -40,8 +43,22 @@ public class Editor extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
         content=findViewById(R.id.editor_editText);
-        filename = findViewById(R.id.editor_filename);
         save = findViewById(R.id.editor_save);
+        filename = findViewById(R.id.editor_filename);
+        Intent intent = getIntent();
+        if (intent.hasExtra("forEdit"))
+        {
+            id=intent.getStringExtra("id");
+            forEdit =true;
+            getSupportActionBar().setTitle("Edit");
+            save.setText("Update");
+            content.setText(intent.getStringExtra("content"));
+            filename.setText(intent.getStringExtra("fileName"));
+        }
+        else {
+            getSupportActionBar().setTitle("Add");
+        }
+
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,19 +82,26 @@ public class Editor extends AppCompatActivity {
         String time = DateFormat.getTimeInstance().format(calendar.getTime());
         Log.d("______","date : " + date + time);
         String file = filename.getText().toString().trim();
-        String myCOntent =  content.getText().toString();
-        Document document = new Document(file,myCOntent,date);
+        String myContent =  content.getText().toString();
+        Document document = new Document(file,myContent,date);
+        if (forEdit==false){
+            myCollection.add(document).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                    Toast.makeText(Editor.this,"Document Saved",Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("____","error : " + e.toString());
+                }
+            });
+        }
+        if (forEdit==true){
+            myCollection.document(id).update("content",myContent);
+            myCollection.document(id).update("fileName",file);
+        }
 
-        myCollection.add(document).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Toast.makeText(Editor.this,"Document Saved",Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("____","error : " + e.toString());
-            }
-        });
+
     }
 }

@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:title="Edit"
+        android:id="@+id/openDocument_menu"></item>
+    <item android:title="Save on Device"
+        android:id="@+id/saveonDevice"></item>
+    <item android:title="Delete"
+        android:id="@+id/deleteFile"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_delete_black_24dp"></item>
     <item android:title="Star Document"
-        android:id="@+id/starDocument_menu"></item>
+        android:id="@+id/starDocument_menu"
+        android:icon="@drawable/ic_star_black_24dp"
+        app:showAsAction="ifRoom"
+        >
+
+    </item>
+
 
 </menu>

@@ -7,6 +7,8 @@ public class Document {
     private String content;
     private String docID;
     private String date;
+    private Boolean isStarred = false;
+    private Boolean onBin = false;
     public Document() {
 
     }
@@ -15,6 +17,22 @@ public class Document {
         this.fileName = fileName;
         this.date=date;
         this.content = content;
+    }
+
+    public Boolean getStarred() {
+        return isStarred;
+    }
+
+    public void setStarred(Boolean starred) {
+        isStarred = starred;
+    }
+
+    public Boolean getOnBin() {
+        return onBin;
+    }
+
+    public void setOnBin(Boolean onBin) {
+        this.onBin = onBin;
     }
 
     public String getFileName() {

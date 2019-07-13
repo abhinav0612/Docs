@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -118,7 +119,8 @@ public class Recent_fragment extends Fragment {
     }
     void getData()
     {
-        myCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        myCollection.whereEqualTo("onBin",false)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
                 if (e!=null)
@@ -134,6 +136,7 @@ public class Recent_fragment extends Fragment {
                         for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots)
                         {
                             Document doc = snapshot.toObject(Document.class);
+                            doc.setDocID(snapshot.getId());
                             myList.add(doc);
                         }
                     }
@@ -148,7 +151,8 @@ public class Recent_fragment extends Fragment {
     }
     void getSortedasName()
     {
-        myCollection.orderBy("fileName")
+        myCollection.whereEqualTo("onBin",false)
+                .orderBy("fileName")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots,
@@ -166,6 +170,7 @@ public class Recent_fragment extends Fragment {
                         for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots)
                         {
                             Document doc = snapshot.toObject(Document.class);
+                            doc.setDocID(snapshot.getId());
                             myList.add(doc);
                         }
                     }
@@ -179,7 +184,9 @@ public class Recent_fragment extends Fragment {
 
     void getSortedasModified()
     {
-        myCollection.orderBy("date", Query.Direction.DESCENDING)
+        myCollection.whereEqualTo("onBin",false)
+                .whereEqualTo("onBin",false)
+                .orderBy("date", Query.Direction.DESCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots,
@@ -197,6 +204,7 @@ public class Recent_fragment extends Fragment {
                                 for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots)
                                 {
                                     Document doc = snapshot.toObject(Document.class);
+                                    doc.setDocID(snapshot.getId());
                                     myList.add(doc);
                                 }
                             }
@@ -207,4 +215,5 @@ public class Recent_fragment extends Fragment {
                     }
                 });
     }
+
 }
