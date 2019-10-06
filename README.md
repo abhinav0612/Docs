@@ -1,5 +1,5 @@
 # Docs
-It is a document creator and viewer app with cloud firestore support.
+It is a document creator and viewer app with google cloud firestore support.
 
 
 
